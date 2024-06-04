@@ -23,13 +23,13 @@ def borrar():
     direccionCombo.current(0)
 
 #Función para determinar la posición final del robot
-def DeterminarPosicionFinal(direccion, posicion_actual, UnidadesDeMovimiento, largo_maximo, ancho_maximo):
+def DeterminarPosicionFinal(direccion, posicionInicial, UnidadesDeMovimiento, largo_maximo, ancho_maximo):
     #Si la posición actual es un string, se convierte a tupla
-    if isinstance(posicion_actual, str):
-        posicion_actual = posicion_actual.replace("(", "").replace(")", "").split(',')
-        posicion_actual = tuple(map(int, posicion_actual))
+    if isinstance(posicionInicial, str):
+        posicionInicial = posicionInicial.replace("(", "").replace(")", "").split(',')
+        posicionInicial = tuple(map(int, posicionInicial))
     #Se obtienen las coordenadas actuales
-    x_actual, y_actual = posicion_actual
+    x_actual, y_actual = posicionInicial
     nuevaPosicion = (0,0)
     #Se determina la nueva posición del robot
     if direccion == "Arriba":
@@ -53,23 +53,23 @@ def DeterminarPosicionFinal(direccion, posicion_actual, UnidadesDeMovimiento, la
             nuevaPosicion = (nueva_x, y_actual)
             return (nuevaPosicion)    
       
-    #Si el movimiento es inválido, se muestra un mensaje de error
+    #Si el movimiento es inválido, se muestra un mensaje de error y se retorna la posición actual
     root = tk.Tk()
     root.withdraw() 
     messagebox.showerror("Error", "Movimiento fuera de límites")
     root.destroy()
 
-    return (posicion_actual)
+    return (posicionInicial)
 
 #Función para calcular el movimiento del robot    
 def CalcularMovimiento():
     #Se obtienen los valores del campo direccionCombo
     DireccionDeMovimiento = direccionCombo.get()
-    #Determina si el campo posInicialTb está vacío asigna el valor (0,0) a la variable posicion_actual en caso de que tenga un valor asignado se asigna el valor de posInicialTb a la variable posicion_actual
+    #Determina si el campo posInicialTb está vacío asigna el valor (0,0) a la variable posicionInicial en caso de que tenga un valor asignado se asigna el valor de posInicialTb a la variable posicionInicial
     if posInicialTb.get() == "":
-        posicion_actual = (0,0)
+        posicionInicial = (0,0)
     else:
-        posicion_actual = posFinalTb.get()
+        posicionInicial = posFinalTb.get()
     #Si el campo numeroPosTb está vacío se muestra un mensaje de error
     if numeroPosTb.get() == "":
         root = tk.Tk()
@@ -84,10 +84,10 @@ def CalcularMovimiento():
     ancho_maximo = varAncho.get()
     
     #Se determina la posición final del robot
-    PosicionFinal = DeterminarPosicionFinal(DireccionDeMovimiento, posicion_actual, UnidadesDeMovimiento, largo_maximo, ancho_maximo)
+    PosicionFinal = DeterminarPosicionFinal(DireccionDeMovimiento, posicionInicial, UnidadesDeMovimiento, largo_maximo, ancho_maximo)
 
     #Se actualizan los campos posInicialTb y posFinalTb
-    varposInicial.set(str(posicion_actual))
+    varposInicial.set(str(posicionInicial))
     varposFinal.set(str(PosicionFinal))    
 
 
