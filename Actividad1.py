@@ -9,10 +9,11 @@ from tkinter import *
 from tkinter import ttk
 
 
-
+#Boton para salir de la aplicación
 def salir():
     raiz.destroy()
-    
+
+#Boton para borrar los campos de texto   
 def borrar():
     direccionCombo.set("")
     numeroPosTb.delete(0, END)
@@ -21,44 +22,55 @@ def borrar():
     varposFinal.set("")
     direccionCombo.current(0)
 
+#Función para determinar la posición final del robot
 def DeterminarPosicionFinal(direccion, posicion_actual, UnidadesDeMovimiento, largo_maximo, ancho_maximo):
+    #Si la posición actual es un string, se convierte a tupla
     if isinstance(posicion_actual, str):
         posicion_actual = posicion_actual.replace("(", "").replace(")", "").split(',')
         posicion_actual = tuple(map(int, posicion_actual))
+    #Se obtienen las coordenadas actuales
     x_actual, y_actual = posicion_actual
-
+    nuevaPosicion = (0,0)
+    #Se determina la nueva posición del robot
     if direccion == "Arriba":
         nueva_y = y_actual + UnidadesDeMovimiento
         if nueva_y <= largo_maximo / 2:
-            return (x_actual, nueva_y)
+            nuevaPosicion = (x_actual, nueva_y)
+            return (nuevaPosicion)
     elif direccion == "Abajo":
         nueva_y = y_actual - UnidadesDeMovimiento
         if nueva_y >= -largo_maximo / 2:
-            return (x_actual, nueva_y)
+            nuevaPosicion = (x_actual, nueva_y)
+            return (nuevaPosicion)
     elif direccion == "Derecha":
         nueva_x = x_actual + UnidadesDeMovimiento
         if nueva_x <= ancho_maximo / 2:
-            return (nueva_x, y_actual)
+            nuevaPosicion = (nueva_x, y_actual)
+            return (nuevaPosicion)
     elif direccion == "Izquierda":
         nueva_x = x_actual - UnidadesDeMovimiento
         if nueva_x >= -ancho_maximo / 2:
-            return (nueva_x, y_actual)    
+            nuevaPosicion = (nueva_x, y_actual)
+            return (nuevaPosicion)    
       
-
+    #Si el movimiento es inválido, se muestra un mensaje de error
     root = tk.Tk()
     root.withdraw() 
     messagebox.showerror("Error", "Movimiento fuera de límites")
     root.destroy()
 
-    return posicion_actual
-    
+    return (posicion_actual)
+
+#Función para calcular el movimiento del robot    
 def CalcularMovimiento():
+    #Se obtienen los valores del campo direccionCombo
     DireccionDeMovimiento = direccionCombo.get()
+    #Determina si el campo posInicialTb está vacío asigna el valor (0,0) a la variable posicion_actual en caso de que tenga un valor asignado se asigna el valor de posInicialTb a la variable posicion_actual
     if posInicialTb.get() == "":
         posicion_actual = (0,0)
     else:
         posicion_actual = posFinalTb.get()
-    print(posicion_actual)
+    #Si el campo numeroPosTb está vacío se muestra un mensaje de error
     if numeroPosTb.get() == "":
         root = tk.Tk()
         root.withdraw()
@@ -66,11 +78,15 @@ def CalcularMovimiento():
         root.destroy()
         return
     UnidadesDeMovimiento = int(numeroPosTb.get())
+
+    #Se obtienen los valores de los campos largoTb y anchoTb
     largo_maximo = varLargo.get()
     ancho_maximo = varAncho.get()
     
+    #Se determina la posición final del robot
     PosicionFinal = DeterminarPosicionFinal(DireccionDeMovimiento, posicion_actual, UnidadesDeMovimiento, largo_maximo, ancho_maximo)
 
+    #Se actualizan los campos posInicialTb y posFinalTb
     varposInicial.set(str(posicion_actual))
     varposFinal.set(str(PosicionFinal))    
 
@@ -85,6 +101,7 @@ raiz.resizable(0,0)
 contenedor1 = LabelFrame(raiz, text="Datos", bd = 3)
 contenedor1.pack(padx = 5, pady = 5)
 
+#Componentes de la interfaz gráfica
 direccionLabel = Label(contenedor1, text="Dirección del movimiento: ").grid(row=0, column=0, sticky = "w", padx=5, pady=5)
 direccionCombo = ttk.Combobox(contenedor1, state="readonly",width=12,values=["Arriba","Abajo","Derecha", "Izquierda"])
 direccionCombo.grid(row=0,column=1,padx=5, pady=5)
