@@ -1,7 +1,7 @@
 '''
-Autor: Escriba aquí su nombre y apellido completo
-Código: Escriba aquí su código de estudiante
-Fecha: Escriba aquí la fecha de realización
+Autor: Juan Pablo Lenis Rebolledo, Nicolas Romero Guarnizo
+Código: 2235347, 2240393
+Fecha: 04/06/2024
 '''
 import tkinter as tk
 from tkinter import messagebox
