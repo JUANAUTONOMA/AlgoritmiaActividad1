@@ -92,9 +92,9 @@ def principal():
             monedas = int(monedas)
             if monedas > 0:
                 bJugar.config(state="disable")
-                textoInicio = "El juego inicia con " + str(monedas) + " monedas\n"
-                textResultados.insert(END, textoInicio)
+                textoInicio = "El juego inicia con " + str(monedas) + " monedas\n"                
                 continuarJuando = "SI"
+                textResultados.insert(END, textoInicio)
                 monedasFinales = partida(monedas, continuarJuando)
                 monedasFinJuego = determinarMonedasGanadasYPerdidas(monedas, monedasFinales) + "\n"
                 textResultados.insert(END, monedasFinJuego)
