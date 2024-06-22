@@ -8,30 +8,41 @@ import tkinter.scrolledtext as st
 
 #Funcion para determinar monedas ganadas o perdidas
 def determinarMonedasGanadasYPerdidas(monedas, monedasFinales):
+    mensajeMonedasfinales = ""
     if monedas > monedasFinales:
-        return "Has perdido " + str(monedas - monedasFinales) + " monedas"
+        mensajeMonedasfinales = "Has perdido " + str(monedas - monedasFinales) + " monedas"
+        return mensajeMonedasfinales
     elif monedas < monedasFinales:
-        return "Has ganado " + str(monedasFinales - monedas) + " monedas"
+        mensajeMonedasfinales = "Has ganado " + str(monedasFinales - monedas) + " monedas"
+        return mensajeMonedasfinales
     else:
-        return "No has ganado ni perdido monedas"
+        mensajeMonedasfinales = "No has ganado ni perdido monedas"
+        return mensajeMonedasfinales
 
 #Función para determinar el resultado de la tragamonedas
 def determinarResultado(monedasGanadas):
+    mensajeResultado = ""
     if monedasGanadas == 5:
-        return "¡Felicidades, ganaste 5 monedas!"
+        mensajeResultado = "¡Felicidades, ganaste 5 monedas!"
+        return mensajeResultado
     elif monedasGanadas == 2:
-        return "¡Felicidades, ganaste 2 monedas!"
+        mensajeResultado = "¡Felicidades, ganaste 2 monedas!"
+        return mensajeResultado
     else:
-        return "No tienes ningun acierto, ¡continua intentando!"
+        mensajeResultado = "No tienes ningun acierto, ¡continua intentando!"
+        return mensajeResultado
     
 #Determina si el usuario gana monedas
 def determinarMonedasGanadas(numero1, numero2, numero3):
+    monedasObtenidas = 0
     if numero1 == numero2 and numero1 == numero3:
-        return 5
+        monedasObtenidas = 5
+        return monedasObtenidas
     elif numero1 == numero2 or numero1 == numero3 or numero2 == numero3:
-        return 2
+        monedasObtenidas = 2
+        return monedasObtenidas
     else:
-        return 0
+        return monedasObtenidas
 
 
 #Funcion que inicia la partida
@@ -40,7 +51,8 @@ def partida(monedas, continuarJuando):
     while continuarJuando == "SI" or monedas > 0:
         #Indica al usuario el numero de la partida
         monedas -= 1
-        textResultados.insert(END, f"Partida {contador}\n")
+        nivelPartida = "Partida: " + str(contador) + "\n"
+        textResultados.insert(END, nivelPartida)
         #determinarResultado()
         #Se generan los números aleatorios
         numero1 = random.randint(1, 6)
@@ -53,37 +65,45 @@ def partida(monedas, continuarJuando):
         monedasGanadas = determinarMonedasGanadas(numero1, numero2, numero3)
         monedas = monedas + monedasGanadas
         #Se muestra el resultado de la partida
-        textResultados.insert(END, determinarResultado(monedasGanadas) + "\n")
-        textResultados.insert(END, f"La cantidad de monedas acumuladas es {monedas}\n")
+        mensajeResultado = determinarResultado(monedasGanadas) + "\n"
+        textResultados.insert(END, mensajeResultado)
+        monedasAcumuladas = "La cantidad de monedas acumuladas es " + str(monedas) + "\n"
+        textResultados.insert(END, monedasAcumuladas)
+        mensajeFinPartida = "La partida a terminado\n"
         if monedas > 0:            
-            continuarJuando = simpledialog.askstring("Input", "¿Desea seguir jugando?, por favor difite SI/NO:")
+            continuarJuando = simpledialog.askstring("Input", "¿Desea seguir jugando?, por favor difite SI/NO:")            
             if continuarJuando == "NO":
-                textResultados.insert(END, f"La partida a terminado\n")                
+                textResultados.insert(END, mensajeFinPartida)                
                 return monedas
         else:
-            textResultados.insert(END, f"La partida a terminado\n") 
+            textResultados.insert(END, mensajeFinPartida) 
             return monedas    
         contador += 1
 
 #Función para jugar
 def principal():    
     textResultados.config(state="normal")
-    while True:        
+    valida = True
+    mensajeError = "Por favor ingrese un número mayor a 0\n"
+    while valida == True:        
         monedas = simpledialog.askstring("Input", "Ingrese la cantidad de monedas a jugar: ")
+        print(monedas)
         if monedas :
             monedas = int(monedas)
             if monedas > 0:
                 bJugar.config(state="disable")
-                textResultados.insert(END, f"El juego inicia con " + str(monedas) + " monedas\n")
+                textoInicio = "El juego inicia con " + str(monedas) + " monedas\n"
+                textResultados.insert(END, textoInicio)
                 continuarJuando = "SI"
-                monedasFinales = partida(monedas, continuarJuando) 
-                textResultados.insert(END, determinarMonedasGanadasYPerdidas(monedas, monedasFinales) + "\n")
+                monedasFinales = partida(monedas, continuarJuando)
+                monedasFinJuego = determinarMonedasGanadasYPerdidas(monedas, monedasFinales) + "\n"
+                textResultados.insert(END, monedasFinJuego)
                 bJugar.config(state="normal")              
-                break
+                valida = False
             else:
-                textResultados.insert(END, f"Por favor ingrese un número mayor a 0\n")                
+                textResultados.insert(END, mensajeError)                
         else:
-            textResultados.insert(END, f"Por favor ingrese un número mayor a 0\n")
+            textResultados.insert(END, mensajeError)
 
     textResultados.config(state="disable")
 
