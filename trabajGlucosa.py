@@ -65,7 +65,7 @@ def generarReporteGNAlto(*args):
     return reporte   
 
 
-def reporteGNNormalDC(mediciones):
+def generarReporteGNNormalDC(mediciones):
     reporte = ''
     for valor in mediciones:
         if valor >= 70 and valor <= 140:
@@ -90,7 +90,7 @@ def generarReporte(mediciones):
                                                 mediciones_antes_almuerzo, mediciones_despues_almuerzo,
                                                 mediciones_antes_cena, mediciones_despues_cena)
     reporte_glucosa_normal_despues_cena = generarReporteGlucosaNormalDespuesDeComer(mediciones_despues_cena)
-    mediciones_glucosa_normal_despues_cena = reporteGNNormalDC(mediciones_despues_cena)
+    mediciones_glucosa_normal_despues_cena = generarReporteGNNormalDC(mediciones_despues_cena)
     promedio_antes_desayuno = determinarNGPromedioAD(mediciones_antes_desayuno)
 
     reporte = (f'El mayor nivel de glucosa después de comidas es: {mayor_nivel_despues_comidas}\n'
